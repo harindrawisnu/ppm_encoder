@@ -4,9 +4,10 @@
  * updated by Harindra W Pradhana to modify WlToys Transmitter
  * 
  * Changelog
- * A0 input from throttle
+ *
+ * A0 input from throttle, using slower throttle response to prevent breaking your plastic gearbox
  * A1 input from steering
- * A2 input from steering trim
+ * A2 input from steering trim using trimpot
  * A3 input from 3 position switch
  * A4 input from 3 position switch
  */
@@ -63,7 +64,8 @@ void loop(){
   
   // throttle
   val = analogRead(A0);
-  val0 = (val0+val)/2; // smoothing
+  //val0 = (val0+val)/2; standard smoothing
+  val0 = (val0+val0+val0+val)/4; // more smoothing, slower throttle response especially if you're using plastic gear
   if (val0<thr_ctr) ppm[0]=map(val0,thr_fwd,thr_ctr,2000,1500);
   else ppm[0]=map(val0,thr_ctr,thr_rev,1500,1000);
 
